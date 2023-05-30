@@ -1,33 +1,52 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useCallback,  useState } from 'react'
-import ReactFlow, { useNodesState, useEdgesState, addEdge } from 'reactflow';
-import './App.css'
+import ReactFlow, { Controls, applyEdgeChanges, applyNodeChanges } from 'reactflow'
 import 'reactflow/dist/style.css';
+import React, { useState, useCallback } from 'react'
+import './App.css'
 
-const initialNodes = [
-  { id: '1', position: { x: 0, y: 0 }, data: { label: 'Text Message 1' } },
-  { id: '2', position: { x: 0, y: 100 }, data: { label: 'Text Message 2' } },
+const mynodes = [
+  {
+    id: '1',
+    data: { label: 'Test' },
+    position: { x: 50, y: 50 },    
+  },
+  {
+    id: '2',
+    data: { label: 'Message' },
+    position: { x: 150, y: 175},
+  },
 ];
-const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
-export default function App() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+const myedge = [
+  {
+    id: '1-2', source: '1', target: '2', label: 'incoming',
+  }
+];
 
-  const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
+export default function App(){
+  const [nodes, setNodes] = useState(mynodes);
+  const [edges, setEdges] = useState(myedge);
 
-  return (
-    <div style={{width: '100%', height: '100vh'}}>
-      <h1>Chatbot Flow Builder</h1>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-      >        
-      </ReactFlow>
-      <h1>END</h1>
+  const onNodesChange = useCallback(
+    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    []
+  );
+  const onEdgesChange = useCallback(
+    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+    []
+  );
+
+  return(
+    <div>
+      <div className="myBox">
+        <ReactFlow
+          nodes={nodes}
+          onNodesChange={onNodesChange}
+          edges={edges}
+          onEdgesChange={onEdgesChange}
+        >          
+          <Controls />
+        </ReactFlow>
+      </div>
     </div>
   );
 }
