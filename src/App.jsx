@@ -1,26 +1,39 @@
-import ReactFlow, { Controls, applyEdgeChanges, applyNodeChanges } from 'reactflow'
+import ReactFlow, { 
+  Controls,
+  applyEdgeChanges,
+  applyNodeChanges,
+  addEdge,
+} from 'reactflow';
 import 'reactflow/dist/style.css';
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback } from 'react';
 import './App.css'
+import TextNode from './TextNode.jsx';
+import './text-updater-node.css';
+
+const rfStyle = {
+  backgroundColor: '#B8CEFF',
+};
 
 const mynodes = [
   {
-    id: '1',
-    data: { label: 'Test' },
-    position: { x: 50, y: 50 },    
-  },
+    id: 'node-1', 
+    type: 'textUpdater',
+    position: { x: 250, y: 10 },
+    data: { value: 123 } },
   {
-    id: '2',
-    data: { label: 'Message' },
-    position: { x: 150, y: 175},
-  },
+    id: 'node-2', 
+    type: 'textUpdater',
+    position: { x: 30, y: 90 },
+    data: { value: 123 } },    
 ];
 
 const myedge = [
   {
-    id: '1-2', source: '1', target: '2', label: 'incoming',
-  }
+     
+  },
 ];
+
+const nodeTypes = { textUpdater: TextNode };
 
 export default function App(){
   const [nodes, setNodes] = useState(mynodes);
@@ -35,14 +48,21 @@ export default function App(){
     []
   );
 
+  const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
+
   return(
     <div>
+      <h1>Chatbot Flow Builder</h1>
       <div className="myBox">
         <ReactFlow
           nodes={nodes}
           onNodesChange={onNodesChange}
           edges={edges}
           onEdgesChange={onEdgesChange}
+          onConnect={onConnect}     
+          nodeTypes={nodeTypes}          
+          fitView
+          style={rfStyle}        
         >          
           <Controls />
         </ReactFlow>
