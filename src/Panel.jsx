@@ -12,6 +12,7 @@ export default () => {
     <aside>      
       <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'input')} draggable>
         <img src={chat} alt="Chat Node" width="80" height="90" />
+        
       </div>      
     </aside>
   );

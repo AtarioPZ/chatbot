@@ -81,3 +81,15 @@
   margin-bottom: 5px;
   background-color: #e2e2e2;
 }
+
+.savebar {
+  background-color: rgb(191, 205, 207);  
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  padding-right: 50px;
+}

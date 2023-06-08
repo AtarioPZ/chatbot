@@ -1,8 +1,12 @@
 import ReactFlow, { 
+  ReactFlowProvider,
   Controls,
   applyEdgeChanges,
   applyNodeChanges,
   addEdge,
+  useNodesState,
+  useEdgesState,
+  useReactFlow,
 } from 'reactflow';
 import React, { useState, useCallback } from 'react';
 
@@ -61,26 +65,43 @@ export default function App(){
 
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
 
-  return(
-    <div>
-      Chatbot Flow Builder      
-      <div className='dndflow'>
-      <div className="myBox">              
-        <ReactFlow
-          nodes={nodes}
-          onNodesChange={onNodesChange}
-          edges={edges}
-          onEdgesChange={onEdgesChange}
-          defaultEdgeOptions={edgeOptions}
-          onConnect={onConnect}     
-          nodeTypes={nodeTypes}          
-          fitView
-          style={rfStyle}        
-        >          
-          <Controls />
-        </ReactFlow>
-      </div>
+  const Saving = () => {
+    const [nodes, setNodes, onNodesChange] = useNodesState(mynodes);
+    const [edges, setEdges, onEdgesChange] = useEdgesState(myedge);
+    const [rfInstance, setRfInstance] = useState(null);
+    const { setViewport } = useReactFlow();
 
+    const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
+  
+    const onSave = useCallback(() => {
+    if (rfInstance) {
+      const flow = rfInstance.toObject();
+      localStorage.setItem(flowKey, JSON.stringify(flow));
+    }
+  }, [rfInstance]);
+  }
+
+  return(
+    <div>      
+      <div className='savebar'>
+        <button> SAVE </button>
+      </div>     
+      <div className='dndflow'>
+        <div className="myBox">              
+          <ReactFlow
+            nodes={nodes}
+            onNodesChange={onNodesChange}
+            edges={edges}
+            onEdgesChange={onEdgesChange}
+            defaultEdgeOptions={edgeOptions}
+            onConnect={onConnect}     
+            nodeTypes={nodeTypes}          
+            fitView
+            style={rfStyle}        
+          >          
+            <Controls />
+          </ReactFlow>
+        </div>
       <Panel />
       </div>
     </div>
