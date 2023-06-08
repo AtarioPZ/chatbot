@@ -44,7 +44,7 @@ const mynodes = [
 
 const myedge = [
   {
-     
+    id: 'edge-1', source: '2', target: '1'
   },
 ];
 
