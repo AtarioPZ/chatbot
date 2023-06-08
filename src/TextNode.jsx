@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { Handle, Position } from 'reactflow';
 
 export default function TextNode() {
-    const onChange = useCallback((evt) => {
+  const onChange = useCallback((evt) => {
         console.log(evt.target.value);
       }, []);
     

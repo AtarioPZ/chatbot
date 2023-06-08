@@ -4,14 +4,25 @@ import ReactFlow, {
   applyNodeChanges,
   addEdge,
 } from 'reactflow';
-import 'reactflow/dist/style.css';
 import React, { useState, useCallback } from 'react';
+
+import TextNode from './TextNode';
+import Panel from './Panel';
+
+import 'reactflow/dist/style.css';
 import './App.css'
-import TextNode from './TextNode.jsx';
-import './text-updater-node.css';
+import './dndflow.css'
+
 
 const rfStyle = {
   backgroundColor: '#B8CEFF',
+};
+
+const edgeOptions = {
+  animated: true,
+  style: {
+    stroke: 'red',
+  },
 };
 
 const mynodes = [
@@ -52,13 +63,15 @@ export default function App(){
 
   return(
     <div>
-      <h1>Chatbot Flow Builder</h1>
-      <div className="myBox">
+      Chatbot Flow Builder      
+      <div className='dndflow'>
+      <div className="myBox">              
         <ReactFlow
           nodes={nodes}
           onNodesChange={onNodesChange}
           edges={edges}
           onEdgesChange={onEdgesChange}
+          defaultEdgeOptions={edgeOptions}
           onConnect={onConnect}     
           nodeTypes={nodeTypes}          
           fitView
@@ -66,6 +79,9 @@ export default function App(){
         >          
           <Controls />
         </ReactFlow>
+      </div>
+
+      <Panel />
       </div>
     </div>
   );
