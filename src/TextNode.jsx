@@ -16,7 +16,7 @@ export default function TextNode() {
           />
           <div>
             <label htmlFor="text">Send Message</label>
-            <input id="text" name="text" onChange={onChange} className="nodrag" />
+            <input id="text" name="text" onChange={onChange} className="nodrag" placeholder='message...' value={""}/>
           </div>
           <Handle 
           type="source" 

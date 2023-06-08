@@ -19,7 +19,7 @@ import './dndflow.css'
 
 
 const rfStyle = {
-  backgroundColor: '#B8CEFF',
+  backgroundColor: '#989898',
 };
 
 const edgeOptions = {
@@ -31,12 +31,12 @@ const edgeOptions = {
 
 const mynodes = [
   {
-    id: 'node-1', 
+    id: '1', 
     type: 'textUpdater',
     position: { x: 250, y: 10 },
     data: { value: 123 } },
   {
-    id: 'node-2', 
+    id: '2', 
     type: 'textUpdater',
     position: { x: 30, y: 90 },
     data: { value: 123 } },    
@@ -65,6 +65,7 @@ export default function App(){
 
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
 
+  /* SAVE
   const Saving = () => {
     const [nodes, setNodes, onNodesChange] = useNodesState(mynodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(myedge);
@@ -80,29 +81,43 @@ export default function App(){
     }
   }, [rfInstance]);
   }
+  */
+
+  let id = 0;
+  const getId = () => `dndnode_${id++}`;
+
+  const onDragOver = useCallback((event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  }, []);
+
+  
 
   return(
     <div>      
-      <div className='savebar'>
-        <button> SAVE </button>
+      <div className='savebar'>        
+        <button className='button-20'> SAVE </button>
       </div>     
       <div className='dndflow'>
-        <div className="myBox">              
-          <ReactFlow
-            nodes={nodes}
-            onNodesChange={onNodesChange}
-            edges={edges}
-            onEdgesChange={onEdgesChange}
-            defaultEdgeOptions={edgeOptions}
-            onConnect={onConnect}     
-            nodeTypes={nodeTypes}          
-            fitView
-            style={rfStyle}        
-          >          
-            <Controls />
-          </ReactFlow>
-        </div>
-      <Panel />
+        <ReactFlowProvider>
+          <div className="myBox">              
+            <ReactFlow
+              nodes={nodes}
+              onNodesChange={onNodesChange}
+              edges={edges}
+              onEdgesChange={onEdgesChange}
+              defaultEdgeOptions={edgeOptions}
+              onConnect={onConnect}     
+              nodeTypes={nodeTypes}          
+              fitView
+              style={rfStyle}  
+              onDragOver={onDragOver}      
+            >          
+              <Controls />
+            </ReactFlow>
+          </div>
+          <Panel />
+        </ReactFlowProvider>
       </div>
     </div>
   );
