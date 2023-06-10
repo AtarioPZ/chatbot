@@ -40,7 +40,8 @@
   
   .dndflow .reactflow-wrapper {
     flex-grow: 1;
-    height: 100%;
+    width: 80vw;
+	  height: 70vh;
   }
   
   .dndflow .selectall {

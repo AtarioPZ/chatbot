@@ -8,7 +8,7 @@ import ReactFlow, {
   useEdgesState,
   useReactFlow,
 } from 'reactflow';
-import React, { useState, useCallback } from 'react';
+import React, { useState,  useRef, useCallback } from 'react';
 
 import TextNode from './TextNode';
 import Panel from './Panel';
@@ -16,7 +16,6 @@ import Panel from './Panel';
 import 'reactflow/dist/style.css';
 import './App.css'
 import './dndflow.css'
-
 
 const rfStyle = {
   backgroundColor: '#989898',
@@ -50,9 +49,14 @@ const myedge = [
 
 const nodeTypes = { textUpdater: TextNode };
 
-export default function App(){
+let id = 3;
+const getId = () => `dndnode_${id++}`;
+
+const App = () => {  
+  const reactFlowWrapper = useRef(null);
   const [nodes, setNodes] = useState(mynodes);
   const [edges, setEdges] = useState(myedge);
+  const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -83,16 +87,36 @@ export default function App(){
   }
   */
 
-  let id = 0;
-  const getId = () => `dndnode_${id++}`;
-
   const onDragOver = useCallback((event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
   }, []);
 
-  
+  const onDrop = useCallback(
+    (event) => {
+      event.preventDefault();
 
+      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+      const type = event.dataTransfer.getData('application/reactflow');
+
+      if (typeof type === 'undefined' || !type) {
+        return;
+      }
+      const position = reactFlowInstance.project({
+        x: event.clientX - reactFlowBounds.left,
+        y: event.clientY - reactFlowBounds.top,
+      });
+      const newNode = {
+        id: getId(),
+        type: 'textUpdater',
+        position,
+        data: { value: 123 },
+      };  
+      setNodes((nds) => nds.concat(newNode));
+    },
+    [reactFlowInstance]
+  );
+  
   return(
     <div>      
       <div className='savebar'>        
@@ -100,7 +124,7 @@ export default function App(){
       </div>     
       <div className='dndflow'>
         <ReactFlowProvider>
-          <div className="myBox">              
+          <div className="reactflow-wrapper" ref={reactFlowWrapper}>              
             <ReactFlow
               nodes={nodes}
               onNodesChange={onNodesChange}
@@ -108,10 +132,12 @@ export default function App(){
               onEdgesChange={onEdgesChange}
               defaultEdgeOptions={edgeOptions}
               onConnect={onConnect}     
-              nodeTypes={nodeTypes}          
-              fitView
+              nodeTypes={nodeTypes}                        
               style={rfStyle}  
-              onDragOver={onDragOver}      
+              onInit={setReactFlowInstance}
+              onDrop={onDrop}
+              onDragOver={onDragOver}
+              fitView
             >          
               <Controls />
             </ReactFlow>
@@ -122,3 +148,5 @@ export default function App(){
     </div>
   );
 }
+
+export default App;
