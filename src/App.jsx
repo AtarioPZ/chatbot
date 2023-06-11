@@ -8,7 +8,7 @@ import ReactFlow, {
   useEdgesState,
   useReactFlow,
 } from 'reactflow';
-import React, { useState,  useRef, useCallback } from 'react';
+import React, { useState,  useRef, useCallback, useEffect } from 'react';
 
 import TextNode from './TextNode';
 import Panel from './Panel';
@@ -33,12 +33,12 @@ const mynodes = [
     id: '1', 
     type: 'textUpdater',
     position: { x: 250, y: 10 },
-    data: { value: "" } },
+    data: { value: '' } },
   {
     id: '2', 
     type: 'textUpdater',
     position: { x: 30, y: 90 },
-    data: { value: "" } },    
+    data: { value: '' } },    
 ];
 
 const myedge = [
@@ -67,25 +67,41 @@ const App = () => {
     []
   );
 
-  const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
-
-  /* SAVE
-  const Saving = () => {
-    const [nodes, setNodes, onNodesChange] = useNodesState(mynodes);
-    const [edges, setEdges, onEdgesChange] = useEdgesState(myedge);
-    const [rfInstance, setRfInstance] = useState(null);
-    const { setViewport } = useReactFlow();
-
-    const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
-  
-    const onSave = useCallback(() => {
-    if (rfInstance) {
-      const flow = rfInstance.toObject();
-      localStorage.setItem(flowKey, JSON.stringify(flow));
-    }
-  }, [rfInstance]);
+  const onConnect = (params) => {
+    const newEdge = {
+      id: getId(),
+      source: params.source,
+      target: params.target,
+    };
+    setEdges((eds) => addEdge(newEdge, eds));
   }
-  */
+
+  const [selectedNode, setSelectedNode] = useState(null);
+  const [nodeDataValue, setNodeDataValue] = useState('');
+
+  const handleNodeClick = (nodeId) => {
+    const nodeToUpdate = nodes.find((node) => node.id == nodeId);
+    if (nodeToUpdate){
+      setSelectedNode(nodeToUpdate);
+      setNodeDataValue(nodeToUpdate.data.value);
+    }
+  };
+
+  const handleNodeDrop = useCallback(
+    (value) => {
+      if (selectedNode) {
+        const updatedNode = {
+          ...selectedNode,
+          data: { ...selectedNode.data, value },
+        };
+        const updatedNodes = nodes.map((node) =>
+          node.id === selectedNode.id ? updatedNode : node
+        );
+        setNodes(updatedNodes);
+      }
+    },
+    [selectedNode, nodes, setNodes]
+  );
 
   const onDragOver = useCallback((event) => {
     event.preventDefault();
@@ -116,6 +132,12 @@ const App = () => {
     },
     [reactFlowInstance]
   );
+
+  useEffect(() => {
+    if (selectedNode) {
+      setNodeDataValue(selectedNode.data.value);
+    }
+  }, [selectedNode]);
   
   return(
     <div>      
@@ -142,7 +164,13 @@ const App = () => {
               <Controls />
             </ReactFlow>
           </div>
-          <Panel />
+          <Panel
+            onNodeDrop={handleNodeDrop}
+            onClick={handleNodeClick}
+            selectedNodeId={selectedNode}
+            nodeDataValue={nodeDataValue}
+            setNodeDataValue={setNodeDataValue}
+          />
         </ReactFlowProvider>
       </div>
     </div>

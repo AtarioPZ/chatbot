@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import { Handle, Position } from 'reactflow';
 import chat from './chat.png';
 
-export default function TextNode( { data }) {
+export default function TextNode( { data, onClick }) {
   const [value, setValue] = useState(data.value);
 
   const onDragStart = (event) => {
@@ -13,10 +13,13 @@ export default function TextNode( { data }) {
     event.dataTransfer.effectAllowed = 'move';
   };
 
-  const onChange = useCallback((evt) => {
+  const onChange = useCallback((event) => {
     event.stopPropagation(); // Stop the drag event from bubbling up to the parent node
-      setValue(evt.target.value);
-      }, []);
+    setValue(event.target.value);
+     }, []);
+
+  const handleBlur = useCallback(() => {    
+  }, [onClick, value]);
     
       return (
         <div className="text-updater-node" draggable onDragStart={onDragStart}>
@@ -28,7 +31,7 @@ export default function TextNode( { data }) {
           />
           <div>
             <label htmlFor="text">Send Message</label>
-            <input id="text" name="text" onChange={onChange} className="nodrag" placeholder='message...' value={value} draggable={false} />
+            <input id="text" name="text" onChange={onChange} onBlur={handleBlur} className="nodrag" placeholder='message...' value={value} draggable={false} />
           </div>
           <Handle 
           type="source" 

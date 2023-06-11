@@ -27,7 +27,7 @@
     display: flex;
     justify-content: left;
     align-items: center;
-    cursor: grabb;
+    cursor: grab;
   }
   
   .dndflow .dndnode.input {
@@ -57,5 +57,55 @@
       width: 20%;
       max-width: 250px;
     }
+  }
+  
+  .settings-panel {
+    width:80px;
+    height: 20px;
+    padding: 20px;
+    border: none;
+    border-radius: 2px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+    cursor: grab;
+  }
+  
+  .settings-panel input {
+    display: flex;
+    align-items: center;
+    width: 200px;
+    height: 30px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .back-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .back-button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .back-button svg {
+    width: 24px;
+    height: 24px;
+    fill: #555555;
+  }
+  
+  .back-button svg path {
+    stroke-width: 2;
   }
   

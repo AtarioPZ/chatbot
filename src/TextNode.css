@@ -1,0 +1,34 @@
+.text-node {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border: 1px solid #ccc;
+    background-color: #f2f2f2;
+    cursor: grab;
+  }
+  
+  .text-node.selected {
+    background-color: #e2e2e2;
+  }
+  
+  .text-node img {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+  
+  .text-node span {
+    font-size: 14px;
+  }
+  
+  .settings-panel {
+    padding: 8px;
+  }
+  
+  .settings-panel input {
+    width: 100%;
+    padding: 4px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+  }
+  
