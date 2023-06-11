@@ -27,6 +27,14 @@
     display: flex;
     justify-content: left;
     align-items: center;
+    cursor: pointer;
+  }
+
+  .dndflow .dndnode:hover {
+    cursor: pointer; 
+  }
+
+  .dndflow .dndnode:active {
     cursor: grab;
   }
   
@@ -58,35 +66,54 @@
       max-width: 250px;
     }
   }
+
+  .dndflow .dndnode .chat-node {
+    display: flex;
+    margin-top: 50px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .dndflow .dndnode .chat-node img {
+    width: 80px;
+    height: 90px;
+  }
+  
+  .dndflow .dndnode .chat-node span {
+    color: #000000;
+    margin-top: 2px;
+  }
   
   .settings-panel {
-    width:80px;
-    height: 20px;
-    padding: 20px;
+    width:100%;
+    height:100%;    
     border: none;
     border-radius: 2px;
     margin-bottom: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: left;
-    align-items: center;
+    align-items: left;
     cursor: grab;
+    justify-content: flex-start;
+    overflow: hidden;
   }
   
   .settings-panel input {
     display: flex;
-    align-items: center;
+    align-items: left;
     width: 200px;
     height: 30px;
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    box-sizing: border-box;
   }
   
   .back-button {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: right;
     width: 36px;
     height: 36px;
     background-color: transparent;

@@ -50,14 +50,14 @@ export default function Panel({ onNodeDrop }) {
           <button className="back-button" onClick={handleBack}>
             <img src={backB} alt="Back" width="8" height="9" />
           </button>
-          <div className='settings-input'>
-          <input
-            type="text"
-            placeholder="Enter message..."
-            value={inputValue}
-            onChange={handleInputChange}
-          />
-          <button onClick={handleSaveClick}>Save</button>
+          <div className='settings-panel-input'>
+            <input
+              type="text"
+              placeholder="Enter message..."
+              value={inputValue}
+              onChange={handleInputChange}
+            />
+            <button onClick={handleSaveClick}>Save</button>
         </div>
         </div>
       ) : (
@@ -68,7 +68,10 @@ export default function Panel({ onNodeDrop }) {
             draggable={true}
             onClick={() => handleNodeClick('input')}
           >
-            <img src={chat} alt="Chat Node" width="80" height="90" />
+            <div className="chat-node">
+              <img src={chat} alt="Chat Node" width="80" height="90" />
+              <span>Message</span>
+            </div>
           </div>
         </div>
       )}
