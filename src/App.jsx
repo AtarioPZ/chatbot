@@ -33,12 +33,12 @@ const mynodes = [
     id: '1', 
     type: 'textUpdater',
     position: { x: 250, y: 10 },
-    data: { value: 123 } },
+    data: { value: "" } },
   {
     id: '2', 
     type: 'textUpdater',
     position: { x: 30, y: 90 },
-    data: { value: 123 } },    
+    data: { value: "" } },    
 ];
 
 const myedge = [
@@ -110,7 +110,7 @@ const App = () => {
         id: getId(),
         type: 'textUpdater',
         position,
-        data: { value: 123 },
+        data: { value: "" },
       };  
       setNodes((nds) => nds.concat(newNode));
     },

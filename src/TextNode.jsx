@@ -1,15 +1,21 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Handle, Position } from 'reactflow';
 import chat from './chat.png';
 
-export default function TextNode() {
+export default function TextNode( { data }) {
+  const [value, setValue] = useState(data.value);
+
   const onDragStart = (event) => {
+    event.stopPropagation(); // Stop the drag event from bubbling up to the parent node
+    event.preventDefault(); // Prevent the default behavior of dragging
+
     event.dataTransfer.setData('application/reactflow', 'textUpdater');
     event.dataTransfer.effectAllowed = 'move';
   };
 
   const onChange = useCallback((evt) => {
-        console.log(evt.target.value);
+    event.stopPropagation(); // Stop the drag event from bubbling up to the parent node
+      setValue(evt.target.value);
       }, []);
     
       return (
@@ -22,7 +28,7 @@ export default function TextNode() {
           />
           <div>
             <label htmlFor="text">Send Message</label>
-            <input id="text" name="text" onChange={onChange} className="nodrag" placeholder='message...' value={""}/>
+            <input id="text" name="text" onChange={onChange} className="nodrag" placeholder='message...' value={value} draggable={false} />
           </div>
           <Handle 
           type="source" 
