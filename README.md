@@ -2,3 +2,6 @@
 
 
 Try out this incomplete/on-going project on [Vercel](https://chatbot-atariopz.vercel.app/) 
+
+Completed: 90%
+Task left: Save data input on Settings Panel
