@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { Handle, Position } from 'reactflow';
 import chat from './chat.png';
 
-export default function TextNode( { data, onClick }) {
+export default function TextNode( { data, onClick, nodeDataValue  }) {
   const [value, setValue] = useState(data.value);
 
   const onDragStart = (event) => {
@@ -16,10 +16,19 @@ export default function TextNode( { data, onClick }) {
   const onChange = useCallback((event) => {
     event.stopPropagation(); // Stop the drag event from bubbling up to the parent node
     setValue(event.target.value);
-     }, []);
+    onClick && onClick(event.target.value);
+     }, [onClick]);
 
-  const handleBlur = useCallback(() => {    
+  const handleBlur = useCallback(() => {   
+    onClick && onClick(value); 
   }, [onClick, value]);
+
+  useEffect(() => {    
+    if (onClick) {
+      setValue(data.value);
+      console.log('Value received in TextNode:', data.value);
+    }
+  }, [data.value]);
     
       return (
         <div className="text-updater-node" draggable onDragStart={onDragStart}>
@@ -31,7 +40,15 @@ export default function TextNode( { data, onClick }) {
           />
           <div>
             <label htmlFor="text">Send Message</label>
-            <input id="text" name="text" onChange={onChange} onBlur={handleBlur} className="nodrag" placeholder='message...' value={value} draggable={false} />
+            <input
+              id="text"
+              name="text"
+              onChange={onChange}
+              onBlur={handleBlur}
+              className="nodrag"
+              placeholder='message...'
+              value={nodeDataValue}
+              draggable={false} />
           </div>
           <Handle 
           type="source" 

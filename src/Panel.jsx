@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, } from 'react';
 import './dndflow.css';
 import chat from './chat.png';
 import backB from './back.png';
 
-export default function Panel({ onNodeDrop }) {
-  const [selectedNodeType, setSelectedNodeType] = useState(null);
-  const [inputValue, setInputValue] = useState('');
-  const [showSettingsPanel, setShowSettingsPanel] = useState(false);
+export default function Panel({ onNodeDrop, handleNodeDrop, handleValueChange }) {
+  let [selectedNodeType, setSelectedNodeType] = useState(null);
+  let [inputValue, setInputValue] = useState('');
+  let [showSettingsPanel, setShowSettingsPanel] = useState(false);
 
   const handleNodeClick = (nodeType) => {
     setSelectedNodeType(nodeType);
@@ -24,16 +24,16 @@ export default function Panel({ onNodeDrop }) {
 
   const handleSaveClick = () => {
     if (inputValue.trim() !== '') {
-      onNodeDrop(inputValue);
+      handleNodeDrop(inputValue);
       setSelectedNodeType(null);
       setInputValue('');
       setShowSettingsPanel(false);
+      handleValueChange(inputValue);
     }
   };
 
   const handleBack = () => {
     setSelectedNodeType(null);
-    setInputValue('');
     setShowSettingsPanel(false);
   };
 
@@ -59,7 +59,7 @@ export default function Panel({ onNodeDrop }) {
             />
             <button onClick={handleSaveClick}>Save</button>
         </div>
-        </div>
+        </div>        
       ) : (
         <div>
           <div
